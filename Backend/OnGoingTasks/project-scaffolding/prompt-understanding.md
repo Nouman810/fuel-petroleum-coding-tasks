@@ -28,6 +28,13 @@ The foundation for a two-role (Admin/Dealer) fuel station management web app, fo
 
 No auth, no dealer/station/product data model, no business logic. Those are Tasks 02+ in the same story.
 
+## Branching Strategy
+
+This task is part of a multi-PR story. Branch from and target PRs to the story branch:
+- **Story branch:** story/3-dealer-fuel-station-management-system
+- **Feature branch:** feature/fuel_petroleum-XXX-project-scaffolding (branched from story/3-dealer-fuel-station-management-system)
+- **PR target:** story/3-dealer-fuel-station-management-system (not main)
+
 ## Applicable Rules
 
 No project-specific coding standards are installed yet (`standards_location` is unset in `.claude/config_hints.json` — this is a brand-new repo). Follow standard Express/React/Prisma community conventions until the project's own rules exist.
