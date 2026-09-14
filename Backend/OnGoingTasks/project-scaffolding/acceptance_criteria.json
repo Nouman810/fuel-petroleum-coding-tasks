@@ -25,13 +25,13 @@
       "id": "AC-4",
       "description": "Frontend has one passing automated test covering the landing page render",
       "verification": "frontend/src/App.test.jsx passes under `npm test` in frontend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-5",
       "description": "Lint passes with zero errors in both services",
       "verification": "`npm run lint` exits 0 in backend/ and in frontend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-6",
@@ -43,7 +43,7 @@
       "id": "AC-7",
       "description": "Root README documents local setup and run steps for both services, including the database",
       "verification": "README.md contains prerequisites, backend setup steps, frontend setup steps, and how to run tests for each",
-      "passes": false
+      "passes": true
     }
   ]
 }

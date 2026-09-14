@@ -95,6 +95,18 @@ A model-less schema has no diff to apply, so plain `prisma migrate dev` reports 
 
 `feature/fuel_petroleum-XXX-project-scaffolding` (created from `story/3-dealer-fuel-station-management-system`; ticket number filled in at Phase 4i)
 
+## Change Log
+
+| Date | Time | Person | Change |
+|------|------|--------|--------|
+| 2026-09-14 | - | noumanmuzaffar007@gmail.com | `npm create vite@latest` now scaffolds with `oxlint` by default instead of ESLint. Swapped it out for the planned ESLint flat config (+ `eslint-plugin-react`, `eslint-plugin-react-hooks`, `globals`) to keep both services on one linting story, per the plan. |
+| 2026-09-14 | - | noumanmuzaffar007@gmail.com | No Docker/Postgres/package-manager available in the dev shell. Health-check test and Prisma migration are written correctly per plan but verified via CI's live postgres service container rather than locally in this session (user-confirmed). |
+| 2026-09-14 | - | noumanmuzaffar007@gmail.com | `npm install prisma`/`@prisma/client` with no version pin resolved to `8.0.0-rc.15` — a pre-release "Prisma Developer Platform" CLI with a completely different command tree (no `generate`/`migrate` commands) and, on the last-stable `7.x` line, a breaking change removing `datasource.url` from `schema.prisma` in favor of a `prisma.config.ts` + driver-adapter pattern. Pinned both packages to `6.19.3` (last stable release matching the plan's simple `url = env("DATABASE_URL")` schema, no adapter needed) to keep this task's scope to plumbing only. Migrating to Prisma 7's driver-adapter pattern is out of scope here. |
+| 2026-09-14 | - | noumanmuzaffar007@gmail.com | This machine's Kaspersky Endpoint Security TLS-inspection proxy caused every npm install to fail instantly with `SELF_SIGNED_CERT_IN_CHAIN` (masked as a hang because output was piped through `tail`, losing npm's real exit code). Fixed by exporting the Kaspersky root CA from the Windows cert store and setting `NODE_EXTRA_CA_CERTS` for npm/node commands — not a code change, but worth recording since it'll hit every future task on this machine until set permanently. |
+| 2026-09-14 | - | noumanmuzaffar007@gmail.com | Could not run `prisma migrate dev --create-only` (needs a live DB connection even to create an empty migration). Hand-wrote `prisma/migrations/migration_lock.toml` and `prisma/migrations/20260914120000_init/migration.sql` (empty) matching Prisma's exact on-disk convention instead. Functionally identical to what the CLI would produce for a model-less schema. |
+| 2026-09-14 | - | noumanmuzaffar007@gmail.com | `npm create vite@latest` resolved a fresh `eslint@10.10.0`, which conflicts with `eslint-plugin-react@7.37.5`'s peer range (`^3‖...‖^9.7`, no 10 support yet). Pinned frontend's `eslint`/`@eslint/js` to `^9` to satisfy the peer dependency rather than forcing past the conflict. |
+| 2026-09-14 | - | noumanmuzaffar007@gmail.com | `@testing-library/jest-dom` v7's `setupTests.js` import calls `expect.extend(...)` at module load, which threw `ReferenceError: expect is not defined` because Vitest doesn't inject `describe`/`it`/`expect` as globals by default. Added `test.globals: true` to `vite.config.js` (standard Jest-compatible Vitest config) to fix it. |
+
 ## Execution Tracking
 
 - **Started:** 2026-09-14
