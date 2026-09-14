@@ -17,8 +17,8 @@
     },
     {
       "id": "AC-3",
-      "description": "Frontend renders a landing page showing the Ignite Petroleum logo, app name, and applies the theme tokens",
-      "verification": "manual: `npm run dev` in frontend/, load the page in a browser, confirm logo image, heading text, and background/primary colors match the theme tokens",
+      "description": "Frontend renders a landing page showing the Ignite Petroleum logo (cropped lockup, not the raw padded JPEG), app name, and applies the theme tokens",
+      "verification": "manual: `npm run dev` in frontend/, load the page in a browser, confirm public/logo-full.png renders without a visible background-color mismatch box, heading text is present, and background/primary colors match the theme tokens",
       "passes": false
     },
     {
