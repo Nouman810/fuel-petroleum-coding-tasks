@@ -1,0 +1,49 @@
+{
+  "task": "project-scaffolding",
+  "branch": "feature/fuel_petroleum-XXX-project-scaffolding",
+  "locked_at": "2026-09-14",
+  "criteria": [
+    {
+      "id": "AC-1",
+      "description": "GET /health returns 200 with a body indicating the database is connected, against a live Postgres instance",
+      "verification": "curl http://localhost:<port>/health returns 200 with JSON body { status: \"ok\", db: \"connected\" } while Postgres (via docker-compose) is running",
+      "passes": false
+    },
+    {
+      "id": "AC-2",
+      "description": "Backend has one passing automated test covering the health check",
+      "verification": "backend/src/routes/health.test.js passes under `npm test` in backend/",
+      "passes": false
+    },
+    {
+      "id": "AC-3",
+      "description": "Frontend renders a landing page showing the Ignite Petroleum logo, app name, and applies the theme tokens",
+      "verification": "manual: `npm run dev` in frontend/, load the page in a browser, confirm logo image, heading text, and background/primary colors match the theme tokens",
+      "passes": false
+    },
+    {
+      "id": "AC-4",
+      "description": "Frontend has one passing automated test covering the landing page render",
+      "verification": "frontend/src/App.test.jsx passes under `npm test` in frontend/",
+      "passes": false
+    },
+    {
+      "id": "AC-5",
+      "description": "Lint passes with zero errors in both services",
+      "verification": "`npm run lint` exits 0 in backend/ and in frontend/",
+      "passes": false
+    },
+    {
+      "id": "AC-6",
+      "description": "CI runs lint + test for both services on a PR, with a live Postgres service for the backend job",
+      "verification": ".github/workflows/ci.yml defines a postgres service container and runs backend+frontend lint/test jobs; verified green on the PR opened for this task",
+      "passes": false
+    },
+    {
+      "id": "AC-7",
+      "description": "Root README documents local setup and run steps for both services, including the database",
+      "verification": "README.md contains prerequisites, backend setup steps, frontend setup steps, and how to run tests for each",
+      "passes": false
+    }
+  ]
+}
