@@ -1,0 +1,187 @@
+{
+  "task": "equipment-management",
+  "branch": "feature/fuel_petroleum-XXX-equipment-management",
+  "locked_at": "2026-09-15",
+  "criteria": [
+    {
+      "id": "AC-1",
+      "description": "POST /equipment (Dealer, TANK) creates a tank with capacity/product, returns 201",
+      "verification": "backend/src/routes/equipment.test.js: create-tank test passes under `npm test` in backend/ (Decimal fields compared via Number(...))",
+      "passes": false
+    },
+    {
+      "id": "AC-2",
+      "description": "POST /equipment (Dealer, DISPENSER) creates a dispenser with no capacity/product/currentMeterReading, returns 201",
+      "verification": "backend/src/routes/equipment.test.js: create-dispenser test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-3",
+      "description": "POST /equipment (Dealer, NOZZLE) creates a nozzle attached to an existing dispenser with the supplied currentMeterReading baseline, returns 201",
+      "verification": "backend/src/routes/equipment.test.js: create-nozzle test passes (Number(currentMeterReading) compared)",
+      "passes": false
+    },
+    {
+      "id": "AC-4",
+      "description": "POST /equipment with a malformed body returns 400",
+      "verification": "backend/src/routes/equipment.test.js: create-validation-400 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-5",
+      "description": "POST /equipment with a stationId belonging to a different dealer returns 403",
+      "verification": "backend/src/routes/equipment.test.js: cross-dealer-station-403 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-6",
+      "description": "POST /equipment (NOZZLE) with a parentEquipmentId that isn't a DISPENSER at the same station returns 404",
+      "verification": "backend/src/routes/equipment.test.js: invalid-parent-404 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-7",
+      "description": "POST /equipment with an Admin token returns 403",
+      "verification": "backend/src/routes/equipment.test.js: admin-post-403 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-8",
+      "description": "GET /equipment (Admin) returns all equipment across the network",
+      "verification": "backend/src/routes/equipment.test.js: admin-list test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-9",
+      "description": "GET /equipment (Admin) with ?stationId= returns only that station's equipment",
+      "verification": "backend/src/routes/equipment.test.js: admin-list-filter test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-10",
+      "description": "GET /equipment (Dealer) returns only their own station(s)' equipment (default, unfiltered)",
+      "verification": "backend/src/routes/equipment.test.js: dealer-scoped-list test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-11",
+      "description": "GET /equipment (Dealer) with ?stationId= set to their own station narrows to that station's equipment",
+      "verification": "backend/src/routes/equipment.test.js: dealer-own-station-filter test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-12",
+      "description": "GET /equipment (Dealer) with ?stationId= set to another dealer's station returns an empty array",
+      "verification": "backend/src/routes/equipment.test.js: dealer-foreign-station-filter-empty test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-13",
+      "description": "GET /equipment for a Dealer-role caller with no linked dealerId returns 403",
+      "verification": "backend/src/routes/equipment.test.js: orphan-dealer-403 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-14",
+      "description": "GET /equipment/:id returns 404 for a non-existent id (Admin caller)",
+      "verification": "backend/src/routes/equipment.test.js: admin-get-not-found test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-15",
+      "description": "GET /equipment/:id returns 403 for a Dealer requesting another dealer's equipment via dealerScope",
+      "verification": "backend/src/routes/equipment.test.js: dealer-get-other-403 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-16",
+      "description": "PATCH /equipment/:id (Dealer, own TANK) updates capacity/product; type/stationId/parentEquipmentId/currentMeterReading remain unchanged even if included in the request body",
+      "verification": "backend/src/routes/equipment.test.js: patch-tank-scoped-fields test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-17",
+      "description": "PATCH /equipment/:id (Dealer, own DISPENSER) with a capacity in the body leaves capacity as null",
+      "verification": "backend/src/routes/equipment.test.js: patch-dispenser-schema test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-18",
+      "description": "PATCH /equipment/:id (Dealer, own NOZZLE) updates identifier; currentMeterReading remains unchanged even if included in the request body",
+      "verification": "backend/src/routes/equipment.test.js: patch-nozzle-schema test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-19",
+      "description": "PATCH /equipment/:id returns 403 for a Dealer acting on another dealer's equipment",
+      "verification": "backend/src/routes/equipment.test.js: patch-other-403 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-20",
+      "description": "DELETE /equipment/:id returns 403 for a Dealer acting on another dealer's equipment",
+      "verification": "backend/src/routes/equipment.test.js: delete-other-403 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-21",
+      "description": "PATCH and DELETE /equipment/:id are both unreachable by an Admin token (403 via requireRole('DEALER'))",
+      "verification": "backend/src/routes/equipment.test.js: admin-blocked-patch-and-delete test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-22",
+      "description": "DELETE /equipment/:id on a DISPENSER with an existing child NOZZLE returns 409",
+      "verification": "backend/src/routes/equipment.test.js: delete-conflict-409 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-23",
+      "description": "DELETE /equipment/:id on a nozzle, then its now-childless dispenser (in that order), both succeed with 200 and the deleted row's JSON",
+      "verification": "backend/src/routes/equipment.test.js: delete-children-first-then-parent test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-24",
+      "description": "/equipment routes reject an unauthenticated caller with 401 on both a collection route and a :id route",
+      "verification": "backend/src/routes/equipment.test.js: unauthenticated tests pass for both route shapes",
+      "passes": false
+    },
+    {
+      "id": "AC-25",
+      "description": "Frontend Dealer station-equipment page renders tanks/dispensers/nozzles with their type visible",
+      "verification": "frontend/src/routes/StationEquipmentPage.test.jsx pass under `npm test` in frontend/",
+      "passes": false
+    },
+    {
+      "id": "AC-26",
+      "description": "Frontend Dealer station-equipment page's create forms (per type) and delete action call the correct api/equipment.js functions with the correct payload/id",
+      "verification": "frontend/src/routes/StationEquipmentPage.test.jsx and frontend/src/routes/DealerShell.test.jsx pass under `npm test` in frontend/",
+      "passes": false
+    },
+    {
+      "id": "AC-27",
+      "description": "MyStationsPage renders a clickable Equipment link on each station card, pointing at that station's equipment page",
+      "verification": "frontend/src/routes/MyStationsPage.test.jsx pass under `npm test` in frontend/",
+      "passes": false
+    },
+    {
+      "id": "AC-28",
+      "description": "Frontend Admin equipment page renders equipment across stations with no create/edit/delete controls present, and AdminHome renders a clickable Manage Equipment link",
+      "verification": "frontend/src/routes/AdminEquipmentPage.test.jsx and frontend/src/routes/AdminShell.test.jsx pass under `npm test` in frontend/",
+      "passes": false
+    },
+    {
+      "id": "AC-29",
+      "description": "Lint passes with zero errors in both services",
+      "verification": "`npm run lint` exits 0 in backend/ and in frontend/",
+      "passes": false
+    },
+    {
+      "id": "AC-30",
+      "description": "CI runs lint + test for both services on a PR, with a live Postgres service for the backend job",
+      "verification": ".github/workflows/ci.yml runs backend+frontend lint/test jobs; verified green on the PR opened for this task",
+      "passes": false
+    }
+  ]
+}
