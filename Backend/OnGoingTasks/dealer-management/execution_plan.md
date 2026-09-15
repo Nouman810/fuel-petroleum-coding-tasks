@@ -182,5 +182,5 @@ None needed. No API-spec or ERD doc exists yet in this repo (no `docs_root` conf
 
 - **Started:** 2026-09-15
 - **Developer:** noumanmuzaffar007@gmail.com
-- **Branch:** feature/fuel_petroleum-XXX-dealer-management
+- **Branch:** feature/fuel_petroleum-XXX-dealer-management (created from story/3-dealer-fuel-station-management-system)
 - **Collaborators:** (none yet)
