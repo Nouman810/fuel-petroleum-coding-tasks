@@ -1,5 +1,8 @@
 # Execution Plan: Product Catalog
 
+## Change Class
+FEATURE
+
 ## Summary
 
 Add Admin-only CRUD for products (name, category, unit, price) as the standalone catalog that Task 07's ordering flow will read from. No Dealer access, no scoping — this is a flat, network-wide list Admin manages, structurally identical in access-control shape to `Dealer` (`requireRole('ADMIN')`, no `dealerScope`).
@@ -12,7 +15,7 @@ Add Admin-only CRUD for products (name, category, unit, price) as the standalone
 
 **Equipment.product stays a plain string.** Task 05 left a note that this field might become a real FK once Product Catalog exists. Confirmed with the user this task does **not** do that migration — it's out of scope, deferred to whenever it's actually needed (most likely alongside Task 07, when Order's own Product FK pattern is decided).
 
-**Full CRUD, including delete.** The raw prompt says "CRUD" explicitly. Unlike `Dealer`/`Station` (which have no delete route in this codebase) or `Equipment` (which has delete with a 409-on-FK-conflict guard), `Product` currently has zero incoming FKs, so `DELETE /products/:id` is a plain `prisma.product.delete()` — no conflict handling needed yet. (Once Task 07 adds `Order.productId`, that task will need to decide whether to add `onDelete: Restrict` and a 409 path here — noted for that task, not handled now.)
+**Full CRUD, including delete.** The raw prompt says "CRUD" explicitly. Unlike `Dealer`/`Station` (which have no delete route in this codebase) or `Equipment` (which has delete with a 409-on-FK-conflict guard), `Product` currently has zero incoming FKs, so there's no FK-conflict case to handle. There is still a not-found case: both `PATCH /products/:id` and `DELETE /products/:id` wrap their `prisma.product.update()`/`.delete()` call in `try/catch` and map Prisma's `P2025` ("record not found") to `404 { error: 'Product not found' }`, matching the same catch shape used in `dealers.js:81-83` (`PATCH /dealers/:id`) and `stations.js:85-88`. Without this catch, Express 5's default error handler would return an unhandled `500` instead of the `404` the test plan requires — `backend/src/app.js` registers no custom error-handling middleware. (Once Task 07 adds `Order.productId`, that task will need to decide whether to add `onDelete: Restrict` and a 409 path here — noted for that task, not handled now.)
 
 **No uniqueness constraint on name.** Not requested by the raw prompt or spec.md; two products can share a name (e.g., different unit/pack sizes are plausible in a real catalog). Not adding an unrequested constraint.
 
@@ -22,13 +25,13 @@ Add Admin-only CRUD for products (name, category, unit, price) as the standalone
 
 ### Backend
 - `backend/prisma/schema.prisma` — add `ProductCategory` enum (`MS`, `HSD`, `LUBRICANT`) and `Product` model.
-- `backend/prisma/migrations/{today}000000_add_product/migration.sql` — new migration, generated via `npx prisma migrate diff --from-schema-datamodel <old-schema-snapshot> --to-schema-datamodel prisma/schema.prisma --script` (real tool output, not hand-written), then applied locally via `npx prisma migrate deploy`.
-- `backend/src/routes/products.js` (new) — `POST /products`, `GET /products`, `GET /products/:id`, `PATCH /products/:id`, `DELETE /products/:id`. All routes `router.use('/products', authenticate, requireRole('ADMIN'))`, matching `dealers.js`'s router-level guard (no `dealerScope` — Product isn't dealer-owned).
+- `backend/prisma/migrations/20260915150000_add_product/migration.sql` — new migration, generated via `npx prisma migrate diff --from-schema-datamodel <old-schema-snapshot> --to-schema-datamodel prisma/schema.prisma --script` (real tool output, not hand-written), then applied locally via `npx prisma migrate deploy`. (The next available timestamp slot: `20260915000000_add_user_auth`, `20260915120000_add_dealer`, `20260915130000_add_station`, `20260915140000_add_equipment` already exist, so this migration must sort after all of them.)
+- `backend/src/routes/products.js` (new) — `POST /products`, `GET /products`, `GET /products/:id`, `PATCH /products/:id`, `DELETE /products/:id`. All routes `router.use('/products', authenticate, requireRole('ADMIN'))`, matching `dealers.js`'s router-level guard (no `dealerScope` — Product isn't dealer-owned). `PATCH`/`DELETE` catch `P2025` → `404` (see Approach).
 - `backend/src/routes/products.test.js` (new) — test cases per Test Plan below.
 - `backend/src/app.js` — add `const productsRouter = require('./routes/products'); app.use(productsRouter);` after the existing router mounts.
 
 ### Frontend
-- `frontend/src/api/products.js` (new) — `listProducts()`, `getProduct(id)`, `createProduct(payload)`, `updateProduct(id, payload)`, `deleteProduct(id)`. Same `apiFetch` wrapper pattern as `api/dealers.js`, all ending in `res.json()` (DELETE returns `200` + the deleted row, matching `equipment.js`'s DELETE convention, not a bare `204`).
+- `frontend/src/api/products.js` (new) — `listProducts()`, `getProduct(id)`, `createProduct(payload)`, `updateProduct(id, payload)`, `deleteProduct(id)`. Same `apiFetch` wrapper pattern as `api/dealers.js` (list/get/create/update), plus `deleteProduct(id)` following `api/equipment.js`'s `deleteEquipment(id)` precedent (dealers.js has no delete function) — all ending in `res.json()`, DELETE returns `200` + the deleted row, not a bare `204`.
 - `frontend/src/routes/ProductListPage.jsx` (new) — list + inline create-form + inline edit + delete, modeled on `DealerListPage.jsx`'s list/create-form shape combined with `StationEquipmentPage.jsx`'s per-row edit/delete pattern (Product needs edit+delete, which `DealerListPage` doesn't have but `StationEquipmentPage`'s `EquipmentRow` does).
 - `frontend/src/routes/ProductListPage.test.jsx` (new) — test cases per Test Plan below.
 - `frontend/src/routes/AdminShell.jsx` — add `import ProductListPage from './ProductListPage';`, add `<Route path="products" element={<ProductListPage />} />`, add `<p><Link to="products">Manage Products</Link></p>` to `AdminHome` alongside the existing Dealers/Stations/Equipment links.
@@ -60,7 +63,7 @@ model Product {
 }
 ```
 
-Migration SQL (generated via `prisma migrate diff`, folder `backend/prisma/migrations/{today}000000_add_product/migration.sql`):
+Migration SQL (generated via `prisma migrate diff`, folder `backend/prisma/migrations/20260915150000_add_product/migration.sql`):
 ```sql
 -- CreateEnum
 CREATE TYPE "ProductCategory" AS ENUM ('MS', 'HSD', 'LUBRICANT');
@@ -95,12 +98,12 @@ CREATE TABLE "products" (
 10. `GET /products/:id` with a Dealer token returns `403`.
 11. `PATCH /products/:id` (Admin) updates name/category/unit/price, returns `200` with updated fields.
 12. `PATCH /products/:id` with a Dealer token returns `403`.
-13. `PATCH /products/:id` for a non-existent id returns `404`.
+13. `PATCH /products/:id` for a non-existent id returns `404` (via explicit `P2025` catch, not the framework default `500`).
 14. `DELETE /products/:id` (Admin) returns `200` with the deleted row's JSON; a subsequent `GET /products/:id` on that id returns `404`.
 15. `DELETE /products/:id` with a Dealer token returns `403`.
-16. `DELETE /products/:id` for a non-existent id returns `404`.
+16. `DELETE /products/:id` for a non-existent id returns `404` (via explicit `P2025` catch, not the framework default `500`).
 
-Run locally: `cd backend && npx jest src/routes/products.test.js --no-cache` (requires the live local Postgres at `C:\Users\it.admin\pg-fuel-petroleum`), then the full suite `npx jest --no-cache`, then re-seed (`npx prisma db seed`) since the full suite wipes the dev seed accounts.
+Run locally: `cd backend && npx jest src/routes/products.test.js --no-cache` (requires the live local Postgres at `C:\Users\it.admin\pg-fuel-petroleum`), then the full suite `npx jest --no-cache`, then re-seed (`npx prisma db seed`) as routine hygiene (each test file scopes its own cleanup to its fixture ids/emails, so the dev seed accounts are not actually at risk from this task's tests, but re-seeding after a full run is harmless and matches established practice from prior tasks).
 
 ### Frontend (`frontend/src/routes/ProductListPage.test.jsx`, `frontend/src/routes/AdminShell.test.jsx`)
 1. Renders one row per product returned by `listProducts()`, with name/category/unit/price visible.
