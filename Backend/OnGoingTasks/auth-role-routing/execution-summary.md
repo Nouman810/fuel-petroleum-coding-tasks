@@ -8,7 +8,7 @@
 - **Local Branch:** feature/fuel_petroleum-XXX-auth-role-routing
 - **Remote Branch:** feature/fuel_petroleum-XXX-auth-role-routing
 - **Reconciliation Result:** created in-place branch (from feature/fuel_petroleum-XXX-project-scaffolding, not main — Task 01's PR #4 is unmerged and this task needs its code)
-- **Last Action:** Plan approved. Branch created. TasksSummary/Backend.md + WeeklySummaries entry logged.
+- **Last Action:** Resumed 2026-09-15. Backend core files already written (password.js, tokens.js, middleware/auth.js, routes/auth.js, seed.js, migration, schema, app.js wiring) but no test files yet. Frontend untouched beyond scaffolding. Backend lint green. Resumed without DB smoke test (user override) — no Postgres/Docker available on this machine, no backend/.env yet; DB-dependent tests (auth.test.js, seed.test.js, middleware/auth.test.js — none of which exist yet) deferred until a database is available.
 
 ## Q&A Log
 - Q: Refresh token storage/rotation strategy? → A: httpOnly secure cookie, DB-hashed (jti), rotated on every use. Access token in-memory only on the client.
