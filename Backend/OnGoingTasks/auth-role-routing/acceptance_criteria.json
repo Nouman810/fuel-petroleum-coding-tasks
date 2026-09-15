@@ -25,13 +25,13 @@
       "id": "AC-4",
       "description": "requireRole('ADMIN') middleware rejects a Dealer-role request with 403",
       "verification": "backend/src/middleware/auth.test.js: requireRole unit test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-5",
       "description": "dealerScope(...) middleware lets Admin requests through unconditionally and rejects a mismatched Dealer request with 403",
       "verification": "backend/src/middleware/auth.test.js: dealerScope unit tests pass",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-6",
@@ -49,25 +49,25 @@
       "id": "AC-8",
       "description": "Frontend renders a login form (email, password, submit) at /",
       "verification": "frontend/src/App.test.jsx passes under `npm test` in frontend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-9",
       "description": "After a successful login, an Admin-role user reaches /admin/*; a Dealer-role user attempting /admin/* is redirected away",
       "verification": "frontend/src/routes/RequireRole.test.jsx (both role paths) passes under `npm test` in frontend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-10",
       "description": "On mount, if a valid refresh cookie exists, the app restores the authenticated session without requiring re-login",
       "verification": "frontend/src/context/AuthContext.test.jsx (mocked /auth/refresh) passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-11",
       "description": "Lint passes with zero errors in both services",
       "verification": "`npm run lint` exits 0 in backend/ and in frontend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-12",
