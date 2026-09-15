@@ -1,18 +1,19 @@
 ## Pull Request
-- *PR not yet created*
+- https://github.com/Nouman810/Fuel_Petroleum/pull/4 (targets story/3-dealer-fuel-station-management-system)
 
 ## Current State
-- **Phase:** 3 (Code)
+- **Phase:** 4 (Finish) — all 7 acceptance criteria pass, CI green
 - **Branch:** feature/fuel_petroleum-XXX-project-scaffolding
 - **Worktree:** false
 - **Local Branch:** feature/fuel_petroleum-XXX-project-scaffolding
 - **Remote Branch:** feature/fuel_petroleum-XXX-project-scaffolding
 - **Reconciliation Result:** created in-place branch (from story/3-dealer-fuel-station-management-system, not main)
-- **Last Action:** backend + frontend scaffolding files written; npm installs running (backend: express/prisma/cors/dotenv; frontend: vite/react base from `npm create vite`, need to add vitest/testing-library/eslint-react deps next)
+- **Last Action:** Resumed session — ran mandatory smoke test (lint + frontend test green locally), fixed a missing root `.gitignore` entry (node_modules/dist/.env/coverage were not ignored, would have committed backend/node_modules), committed and pushed, opened PR #4, watched CI. Backend job passed first try (health check + lint green against live Postgres service container). Frontend job failed in CI only (`webidl.util.markAsUncloneable is not a function` — jsdom@30's bundled undici needs Node's newer webidl internals, not present under Node 20). Fixed by bumping both CI jobs' `node-version` from 20 to 24 (matches the local Node 24.19.0 where tests already passed). Re-ran CI — both jobs green. Verified AC-3 by running the Vite dev server locally and curling the page: logo, favicon, and title all serve correctly with theme tokens applied in App.jsx/theme.css.
 
 ## Q&A Log
 - No clarifying questions needed at Phase 1 — spec.md already covers stack and branding decisions from planning phase.
-- No Docker/Postgres/package manager available in this shell → user confirmed: write code correctly per plan, verify DB-backed criteria (AC-1, AC-2, AC-6) via CI's postgres service container rather than locally.
+- No Docker/Postgres/package manager available in this shell in the prior session → user confirmed: write code correctly per plan, verify DB-backed criteria via CI's postgres service container rather than locally. (This session: Docker still unavailable locally, but CI's postgres service container is the source of truth for AC-1/2/6, and it now passes.)
+- gh token lacked the `workflow` OAuth scope needed to push `.github/workflows/ci.yml`. User ran `gh auth refresh -h github.com -s workflow` themselves; push succeeded afterward.
 
 ## Next Steps
-- Once backend npm install finishes: hand-craft the empty baseline Prisma migration (no live DB to run `prisma migrate dev --create-only` against), install frontend test/lint deps, run lint on both, commit, push, open PR against story branch, then check CI to confirm AC-1/2/6.
+- All acceptance criteria pass and CI is green on PR #4. Ready for `ticket.md` + `pr-description.md` (or just leave the PR body as-is, it already covers scope) and human review/merge into the story branch.

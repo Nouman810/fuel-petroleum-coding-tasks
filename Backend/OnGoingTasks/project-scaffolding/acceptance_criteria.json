@@ -7,19 +7,19 @@
       "id": "AC-1",
       "description": "GET /health returns 200 with a body indicating the database is connected, against a live Postgres instance",
       "verification": "curl http://localhost:<port>/health returns 200 with JSON body { status: \"ok\", db: \"connected\" } while Postgres (via docker-compose) is running",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-2",
       "description": "Backend has one passing automated test covering the health check",
       "verification": "backend/src/routes/health.test.js passes under `npm test` in backend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-3",
       "description": "Frontend renders a landing page showing the Ignite Petroleum logo (cropped lockup, not the raw padded JPEG), app name, and applies the theme tokens",
       "verification": "manual: `npm run dev` in frontend/, load the page in a browser, confirm public/logo-full.png renders without a visible background-color mismatch box, heading text is present, and background/primary colors match the theme tokens",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-4",
@@ -37,7 +37,7 @@
       "id": "AC-6",
       "description": "CI runs lint + test for both services on a PR, with a live Postgres service for the backend job",
       "verification": ".github/workflows/ci.yml defines a postgres service container and runs backend+frontend lint/test jobs; verified green on the PR opened for this task",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-7",
