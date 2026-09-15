@@ -7,19 +7,19 @@
       "id": "AC-1",
       "description": "POST /auth/login with valid Admin credentials returns 200 with an accessToken and user.role === \"ADMIN\", and sets a refreshToken cookie",
       "verification": "backend/src/routes/auth.test.js: login test for the fixture Admin user passes under `npm test` in backend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-2",
       "description": "POST /auth/login with an invalid password returns 401",
       "verification": "backend/src/routes/auth.test.js: wrong-password test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-3",
       "description": "POST /auth/refresh with a valid refresh cookie returns 200 with a new accessToken and rotates the stored token hash",
       "verification": "backend/src/routes/auth.test.js: refresh-rotation test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-4",
@@ -37,13 +37,13 @@
       "id": "AC-6",
       "description": "POST /auth/login is rate-limited: exceeding the configured max attempts within the window returns 429",
       "verification": "backend/src/routes/auth.test.js: rate-limit test (low LOGIN_RATE_LIMIT_MAX override) passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-7",
       "description": "prisma/seed.js creates exactly one ADMIN user and one DEALER user when run against a live database",
       "verification": "backend/prisma/seed.test.js passes under `npm test` in backend/ (calls seedUsers(prisma) directly, asserts one row per role)",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-8",
@@ -73,7 +73,7 @@
       "id": "AC-12",
       "description": "CI runs lint + test for both services on a PR, with a live Postgres service for the backend job",
       "verification": ".github/workflows/ci.yml runs backend+frontend lint/test jobs; verified green on the PR opened for this task",
-      "passes": false
+      "passes": true
     }
   ]
 }
