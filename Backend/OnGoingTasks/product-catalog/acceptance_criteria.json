@@ -1,0 +1,85 @@
+{
+  "task": "product-catalog",
+  "branch": "feature/fuel_petroleum-XXX-product-catalog",
+  "locked_at": "2026-09-15",
+  "criteria": [
+    {
+      "id": "AC-1",
+      "description": "POST /products (Admin) creates a product with name/category/unit/price, returns 201",
+      "verification": "backend/src/routes/products.test.js: create-product test passes under `npm test` in backend/ (Decimal price compared via Number(...))",
+      "passes": false
+    },
+    {
+      "id": "AC-2",
+      "description": "POST /products with a malformed body (missing name, or invalid category) returns 400",
+      "verification": "backend/src/routes/products.test.js: create-validation-400 tests pass",
+      "passes": false
+    },
+    {
+      "id": "AC-3",
+      "description": "POST /products with price as an empty string returns 400 (not silently coerced to 0)",
+      "verification": "backend/src/routes/products.test.js: empty-price-400 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-4",
+      "description": "POST /products with a Dealer token returns 403",
+      "verification": "backend/src/routes/products.test.js: dealer-post-403 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-5",
+      "description": "POST /products with no Authorization header returns 401",
+      "verification": "backend/src/routes/products.test.js: unauthenticated-post-401 test passes",
+      "passes": false
+    },
+    {
+      "id": "AC-6",
+      "description": "GET /products (Admin) returns all products; a Dealer token returns 403",
+      "verification": "backend/src/routes/products.test.js: admin-list and dealer-list-403 tests pass",
+      "passes": false
+    },
+    {
+      "id": "AC-7",
+      "description": "GET /products/:id returns the product for Admin, 404 for a non-existent id, 403 for a Dealer token",
+      "verification": "backend/src/routes/products.test.js: get-by-id, get-not-found, get-dealer-403 tests pass",
+      "passes": false
+    },
+    {
+      "id": "AC-8",
+      "description": "PATCH /products/:id (Admin) updates fields and returns 200; Dealer token returns 403; non-existent id returns 404",
+      "verification": "backend/src/routes/products.test.js: patch-update, patch-dealer-403, patch-not-found tests pass",
+      "passes": false
+    },
+    {
+      "id": "AC-9",
+      "description": "DELETE /products/:id (Admin) returns 200 with the deleted row, and the id is subsequently 404; Dealer token returns 403; non-existent id returns 404",
+      "verification": "backend/src/routes/products.test.js: delete-success, delete-then-404, delete-dealer-403, delete-not-found tests pass",
+      "passes": false
+    },
+    {
+      "id": "AC-10",
+      "description": "Frontend product list page renders products, and its create/edit/delete forms call the correct api/products.js functions with the correct payload/id",
+      "verification": "frontend/src/routes/ProductListPage.test.jsx pass under `npm test` in frontend/",
+      "passes": false
+    },
+    {
+      "id": "AC-11",
+      "description": "AdminHome renders a clickable Manage Products link, and /admin/products resolves to the product list page",
+      "verification": "frontend/src/routes/AdminShell.test.jsx pass under `npm test` in frontend/",
+      "passes": false
+    },
+    {
+      "id": "AC-12",
+      "description": "Lint passes with zero errors in both services",
+      "verification": "`npm run lint` exits 0 in backend/ and in frontend/",
+      "passes": false
+    },
+    {
+      "id": "AC-13",
+      "description": "CI runs lint + test for both services on a PR, with a live Postgres service for the backend job",
+      "verification": ".github/workflows/ci.yml runs backend+frontend lint/test jobs; verified green on the PR opened for this task",
+      "passes": false
+    }
+  ]
+}
