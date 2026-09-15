@@ -2,6 +2,6 @@
 
 **Date:** 2026-09-15 | **Developer:** noumanmuzaffar007@gmail.com | **Platform:** Backend
 
-**What:** (in progress - brief description of what the problem was, 1-2 sentences)
+**What:** Admin had no way to build out the dealer network — the only dealer in the system was the one seeded for login testing, and there was no way to suspend a dealer's access.
 
-**Fix:** (in progress - brief description of what was done, 1-2 sentences)
+**Fix:** Added a Dealer entity with Admin-only CRUD, dealer creation atomically creates its linked login account, and a suspended dealer's login is rejected on both sign-in and token refresh (closing a stale-session gap caught during plan review). Replaced the placeholder Admin shell with a real dealer list/detail/create/edit UI. PR #6, CI green, awaiting merge.

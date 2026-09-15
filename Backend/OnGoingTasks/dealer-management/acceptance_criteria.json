@@ -7,85 +7,85 @@
       "id": "AC-1",
       "description": "POST /dealers (Admin) creates a Dealer and its linked User (role DEALER, correct dealerId) in one transaction, returns 201",
       "verification": "backend/src/routes/dealers.test.js: create-dealer test passes under `npm test` in backend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-2",
       "description": "POST /dealers with an email already in use returns 409",
       "verification": "backend/src/routes/dealers.test.js: duplicate-email test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-3",
       "description": "GET /dealers (Admin) returns the list of dealers, each with region and status visible",
       "verification": "backend/src/routes/dealers.test.js: list test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-4",
       "description": "GET /dealers/:id returns 404 for a non-existent id",
       "verification": "backend/src/routes/dealers.test.js: not-found test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-5",
       "description": "PATCH /dealers/:id (Admin) updates name/region/contactInfo",
       "verification": "backend/src/routes/dealers.test.js: edit test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-6",
       "description": "PATCH /dealers/:id/status (Admin) toggles a dealer between ACTIVE and SUSPENDED",
       "verification": "backend/src/routes/dealers.test.js: status-toggle test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-7",
       "description": "POST /auth/login for a DEALER user linked to a SUSPENDED dealer returns 401 even with correct credentials",
       "verification": "backend/src/routes/auth.test.js: suspended-dealer-login test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-8",
       "description": "POST /auth/login for a DEALER user linked to an ACTIVE dealer still succeeds",
       "verification": "backend/src/routes/auth.test.js: active-dealer-login regression test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-9",
       "description": "POST /auth/refresh also rejects with 401 when the caller's linked dealer has since become SUSPENDED, even with a still-valid refresh cookie",
       "verification": "backend/src/routes/auth.test.js: refresh-after-suspension test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-10",
       "description": "All /dealers routes reject an unauthenticated caller with 401 and a non-Admin (Dealer-role) caller with 403",
       "verification": "backend/src/routes/dealers.test.js: auth-guard tests pass",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-11",
       "description": "Frontend dealer list page renders dealers with region/status, submitting the New Dealer form calls createDealer and refreshes the list, and AdminShell routes /admin/dealers to this page",
       "verification": "frontend/src/routes/DealerListPage.test.jsx and frontend/src/routes/AdminShell.test.jsx pass under `npm test` in frontend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-12",
       "description": "Frontend dealer detail page renders one dealer's fields, supports editing them and toggling status, and AdminShell routes /admin/dealers/:id to this page",
       "verification": "frontend/src/routes/DealerDetailPage.test.jsx and frontend/src/routes/AdminShell.test.jsx pass under `npm test` in frontend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-13",
       "description": "Lint passes with zero errors in both services",
       "verification": "`npm run lint` exits 0 in backend/ and in frontend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-14",
       "description": "CI runs lint + test for both services on a PR, with a live Postgres service for the backend job",
       "verification": ".github/workflows/ci.yml runs backend+frontend lint/test jobs; verified green on the PR opened for this task",
-      "passes": false
+      "passes": true
     }
   ]
 }
