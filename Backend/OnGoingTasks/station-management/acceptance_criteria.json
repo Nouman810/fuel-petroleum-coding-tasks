@@ -7,85 +7,85 @@
       "id": "AC-1",
       "description": "POST /stations (Admin) creates a station assigned to an existing dealer, returns 201",
       "verification": "backend/src/routes/stations.test.js: create-station test passes under `npm test` in backend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-2",
       "description": "POST /stations with a non-existent dealerId returns 404",
       "verification": "backend/src/routes/stations.test.js: nonexistent-dealer test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-3",
       "description": "GET /stations (Admin) returns all stations and supports ?dealerId= and ?region= filters",
       "verification": "backend/src/routes/stations.test.js: admin-list and filter tests pass",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-4",
       "description": "GET /stations (Dealer) returns only that dealer's own station(s), regardless of dealerId or region filter query params sent",
       "verification": "backend/src/routes/stations.test.js: dealer-scoped-list test passes (covers both dealerId and region override attempts)",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-5",
       "description": "GET /stations/:id (Admin) returns any station, 404 for a non-existent id",
       "verification": "backend/src/routes/stations.test.js: admin-get-by-id and not-found tests pass",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-6",
       "description": "GET /stations/:id (Dealer) returns their own station; 403 for another dealer's station via dealerScope",
       "verification": "backend/src/routes/stations.test.js: dealer-get-own and dealer-get-other-403 tests pass",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-7",
       "description": "PATCH /stations/:id (Dealer, own station) updates address/contactInfo; name/region remain unchanged even if included in the request body",
       "verification": "backend/src/routes/stations.test.js: patch-scoped-fields test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-8",
       "description": "PATCH /stations/:id (Dealer) on another dealer's station returns 403 via dealerScope",
       "verification": "backend/src/routes/stations.test.js: dealer-patch-other-403 test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-9",
       "description": "The /stations router's shared authenticate guard rejects an unauthenticated caller with 401 on both a collection route (GET /stations) and a :id route (GET /stations/:id)",
       "verification": "backend/src/routes/stations.test.js: unauthenticated tests pass for both route shapes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-10",
       "description": "PATCH /stations/:id for a non-existent station id returns 404 (Admin caller)",
       "verification": "backend/src/routes/stations.test.js: admin-patch-not-found test passes",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-11",
       "description": "Frontend Admin stations page renders all stations with dealer/region filters, and creating a station via its form succeeds",
       "verification": "frontend/src/routes/StationListPage.test.jsx and frontend/src/routes/AdminShell.test.jsx pass under `npm test` in frontend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-12",
       "description": "Frontend Dealer 'My Stations' page renders the dealer's own station(s) including an empty state, and editing address/contactInfo succeeds",
       "verification": "frontend/src/routes/MyStationsPage.test.jsx and frontend/src/routes/DealerShell.test.jsx pass under `npm test` in frontend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-13",
       "description": "Lint passes with zero errors in both services",
       "verification": "`npm run lint` exits 0 in backend/ and in frontend/",
-      "passes": false
+      "passes": true
     },
     {
       "id": "AC-14",
       "description": "CI runs lint + test for both services on a PR, with a live Postgres service for the backend job",
       "verification": ".github/workflows/ci.yml runs backend+frontend lint/test jobs; verified green on the PR opened for this task",
-      "passes": false
+      "passes": true
     }
   ]
 }
