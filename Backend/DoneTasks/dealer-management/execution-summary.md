@@ -2,7 +2,7 @@
 - https://github.com/Nouman810/Fuel_Petroleum/pull/6 (targets story/3-dealer-fuel-station-management-system)
 
 ## Current State
-- **Phase:** 4 (Finish) — all 14 acceptance criteria pass, CI green
+- **Phase:** 4 (Finish) — all 14 acceptance criteria pass, CI green, PR #6 merged into story/3-dealer-fuel-station-management-system 2026-09-15
 - **Branch:** feature/fuel_petroleum-XXX-dealer-management
 - **Worktree:** false
 - **Local Branch:** feature/fuel_petroleum-XXX-dealer-management
