@@ -181,7 +181,7 @@
       "id": "AC-30",
       "description": "CI runs lint + test for both services on a PR, with a live Postgres service for the backend job",
       "verification": ".github/workflows/ci.yml runs backend+frontend lint/test jobs; verified green on the PR opened for this task",
-      "passes": false
+      "passes": true
     }
   ]
 }

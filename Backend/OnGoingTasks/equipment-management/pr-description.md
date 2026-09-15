@@ -94,4 +94,4 @@ Run locally: `cd frontend && npm test`
 - [x] Frontend MemoryRouter wrapping fixed for `<Link>` usage
 - [x] All routes tested; no dead code (30+ test scenarios)
 - [x] Lint passes: `npm run lint` in backend/ and frontend/
-- [ ] CI verified green on PR
+- [x] CI verified green on PR
