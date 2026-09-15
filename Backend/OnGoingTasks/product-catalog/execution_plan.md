@@ -103,7 +103,7 @@ CREATE TABLE "products" (
 15. `DELETE /products/:id` with a Dealer token returns `403`.
 16. `DELETE /products/:id` for a non-existent id returns `404` (via explicit `P2025` catch, not the framework default `500`).
 
-Run locally: `cd backend && npx jest src/routes/products.test.js --no-cache` (requires the live local Postgres at `C:\Users\it.admin\pg-fuel-petroleum`), then the full suite `npx jest --no-cache`, then re-seed (`npx prisma db seed`) as routine hygiene (each test file scopes its own cleanup to its fixture ids/emails, so the dev seed accounts are not actually at risk from this task's tests, but re-seeding after a full run is harmless and matches established practice from prior tasks).
+Run locally: `cd backend && npx jest src/routes/products.test.js --no-cache` (requires the live local Postgres at `C:\Users\it.admin\pg-fuel-petroleum`), then the full suite `npx jest --no-cache`, then re-seed (`npx prisma db seed`) as routine hygiene (each test file scopes its own cleanup to its fixture ids/emails, so the dev seed accounts are not actually at risk from this task's tests, but re-seeding is a harmless no-op via `upsert` and cheap insurance).
 
 ### Frontend (`frontend/src/routes/ProductListPage.test.jsx`, `frontend/src/routes/AdminShell.test.jsx`)
 1. Renders one row per product returned by `listProducts()`, with name/category/unit/price visible.
